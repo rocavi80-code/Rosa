@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de Accesibilidad Cognitiva en el Aula · UEO Xàtiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #29ABE2;
+    --sky-dark: #1a8ab5;
+    --sky-light: #e8f7fd;
+    --mint: #5DC8C8;
+    --coral: #FF6B6B;
+    --gold: #FFD166;
+    --green: #06D6A0;
+    --navy: #073B4C;
+    --white: #ffffff;
+    --gray: #f0f4f8;
+    --text: #2d3748;
+    --muted: #718096;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #e8f7fd 0%, #f0faf9 50%, #fff8e8 100%);
+    min-height: 100vh;
+    color: var(--text);
+  }
+
+  /* DECORATIVE BLOBS */
+  body::before {
+    content: '';
+    position: fixed; top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(41,171,226,0.12) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed; bottom: -100px; left: -100px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(6,214,160,0.1) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 20px; }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--mint) 100%);
+    border-radius: 24px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(41,171,226,0.3);
+  }
+  header::before {
+    content: '🧠';
+    position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
+    font-size: 90px; opacity: 0.2;
+  }
+  header .tag {
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  header p {
+    opacity: 0.9;
+    font-size: 1rem;
+    font-weight: 600;
+    max-width: 500px;
+  }
+
+  /* INTRO BOX */
+  .intro-box {
+    background: white;
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    border-left: 6px solid var(--sky);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .intro-box .icon { font-size: 2rem; flex-shrink: 0; }
+  .intro-box h2 { font-size: 1rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .intro-box p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+  /* SECTION HEADER */
+  .section-title {
+    background: var(--navy);
+    color: white;
+    border-radius: 16px 16px 0 0;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .emoji { font-size: 1.6rem; }
+  .section-title h2 { font-family: 'Baloo 2', cursive; font-size: 1.15rem; font-weight: 700; }
+  .section-title .count { 
+    margin-left: auto; 
+    background: rgba(255,255,255,0.15); 
+    border-radius: 20px; 
+    padding: 3px 12px; 
+    font-size: 0.8rem; 
+    font-weight: 700;
+  }
+
+  /* QUESTION CARD */
+  .section-block {
+    background: white;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+
+  .question-item {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f4f8;
+    transition: background 0.2s;
+  }
+  .question-item:last-child { border-bottom: none; }
+  .question-item:hover { background: var(--sky-light); }
+
+  .question-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .q-num {
+    background: var(--sky);
+    color: white;
+    border-radius: 50%;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: 36px;
+  }
+
+  .opt-btn {
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: 2.5px solid #e2e8f0;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    position: relative;
+  }
+  .opt-btn:hover { border-color: var(--sky); color: var(--sky); transform: translateY(-2px); }
+  .opt-btn.selected-si {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    box-shadow: 0 4px 12px rgba(6,214,160,0.35);
+  }
+  .opt-btn.selected-no {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255,107,107,0.35);
+  }
+  .opt-btn.selected-aveces {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+    box-shadow: 0 4px 12px rgba(255,209,102,0.35);
+  }
+
+  /* SUBMIT */
+  .submit-area {
+    text-align: center;
+    padding: 32px 20px;
+  }
+  .submit-btn {
+    background: linear-gradient(135deg, var(--sky), var(--mint));
+    color: white;
+    border: none;
+    padding: 18px 48px;
+    border-radius: 50px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(41,171,226,0.4);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(41,171,226,0.5); }
+  .submit-note { font-size: 0.82rem; color: var(--muted); margin-top: 10px; }
+
+  /* RESULTS */
+  #results { display: none; }
+
+  .results-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a5276 100%);
+    border-radius: 24px;
+    padding: 36px;
+    color: white;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .results-header::before {
+    content: '✨';
+    position: absolute; left: 30px; top: 50%; transform: translateY(-50%);
+    font-size: 60px; opacity: 0.15;
+  }
+  .results-header::after {
+    content: '🎯';
+    position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
+    font-size: 60px; opacity: 0.15;
+  }
+  .results-header h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  /* SCORE CIRCLE */
+  .score-circle {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: conic-gradient(var(--green) var(--pct), rgba(255,255,255,0.15) 0);
+    display: flex; align-items: center; justify-content: center;
+    margin: 20px auto;
+    position: relative;
+  }
+  .score-circle-inner {
+    width: 100px; height: 100px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .score-number { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; color: white; line-height: 1; }
+  .score-label { font-size: 0.7rem; color: rgba(255,255,255,0.7); font-weight: 700; }
+
+  .nivel-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 30px;
+    padding: 8px 24px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-family: 'Baloo 2', cursive;
+  }
+
+  /* DIMENSION RESULTS */
+  .dim-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .dim-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-top: 5px solid var(--sky);
+  }
+  .dim-card h3 { font-size: 0.88rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; display: flex; gap: 8px; align-items: center; }
+  .progress-bar-wrap { background: #f0f4f8; border-radius: 10px; height: 10px; margin-bottom: 6px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 10px; transition: width 1s ease; }
+  .dim-stat { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+  .dim-feedback { font-size: 0.8rem; color: var(--text); margin-top: 8px; line-height: 1.5; }
+
+  /* RECOMMENDATIONS */
+  .recom-section {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 24px;
+  }
+  .recom-section h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 18px;
+    display: flex; gap: 10px; align-items: center;
+  }
+  .recom-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+  .recom-item:last-child { border-bottom: none; }
+  .recom-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .recom-text h4 { font-size: 0.9rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .recom-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* RETAKE BTN */
+  .retake-btn {
+    background: white;
+    color: var(--sky);
+    border: 2.5px solid var(--sky);
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+  .retake-btn:hover { background: var(--sky-light); }
+
+  /* PROGRESS TRACKER */
+  .progress-tracker {
+    background: white;
+    border-radius: 16px;
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-tracker span { font-size: 0.85rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .prog-bar-wrap { flex: 1; background: #e2e8f0; border-radius: 10px; height: 8px; overflow: hidden; }
+  .prog-bar { height: 100%; background: linear-gradient(90deg, var(--sky), var(--mint)); border-radius: 10px; transition: width 0.4s; }
+  .prog-count { font-size: 0.85rem; font-weight: 800; color: var(--sky); white-space: nowrap; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  footer strong { color: var(--sky-dark); }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    .options { flex-direction: column; margin-left: 0; }
+    .opt-btn { text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="tag">UEO Xàtiva · Àmbit Discapacitat Intel·lectual</div>
+    <h1>¿Mi aula es cognitivamente accesible?</h1>
+    <p>Test de autoevaluación para docentes · Alumnado con NEE</p>
+  </header>
+
+  <!-- FORM -->
+  <div id="test-form">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+      <div class="icon">📋</div>
+      <div>
+        <h2>¿Cómo funciona este test?</h2>
+        <p>Responde honestamente a cada pregunta según lo que ocurre habitualmente en tu aula. Para cada ítem, indica si lo aplicas: <strong>Sí</strong> (siempre o casi siempre), <strong>A veces</strong> (de forma irregular) o <strong>No</strong> (no está implementado). Al finalizar, obtendrás un perfil detallado con recomendaciones personalizadas.</p>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-tracker">
+      <span>Progreso</span>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+      <div class="prog-count" id="prog-count">0 / 30</div>
+    </div>
+
+    <!-- SECCIÓN 1: ESPACIO Y ENTORNO -->
+    <div class="section-block">
+      <div class="section-title">
+        <span class="emoji">🏫</span>
+        <h2>1. Organización del espacio y entorno</h2>
+        <span class="count">6 ítems</span>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">1</span>Los espacios del aula están claramente delimitados y diferenciados (rincón de trabajo, asamblea, relajación…)</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim1')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim1')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim1')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">2</span>Los materiales y objetos están ordenados y etiquetados con imágenes o pictogramas que indican su contenido.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim1')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim1')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim1')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">3</span>La señalización del aula (carteles, normas, zonas) usa pictogramas o imágenes comprensibles para todo el alumnado.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim1')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim1')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim1')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">4</span>El alumnado con NEE está ubicado en el lugar más adecuado (cerca del docente, lejos de distractores, con compañero/a de apoyo).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim1')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim1')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim1')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">5</span>Se controlan los factores sensoriales que pueden dificultar la concentración: iluminación, ruido, temperatura.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim1')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim1')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim1')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">6</span>Las normas del aula están expuestas visualmente de forma clara, con imágenes y texto sencillo.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim1')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim1')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim1')">❌ No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: ORGANIZACIÓN TEMPORAL -->
+    <div class="section-block">
+      <div class="section-title">
+        <span class="emoji">⏰</span>
+        <h2>2. Organización temporal y anticipación</h2>
+        <span class="count">6 ítems</span>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">7</span>Existe un horario visual en el aula con pictogramas que representa las actividades del día.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim2')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim2')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim2')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">8</span>Se anticipa verbalmente y/o visualmente cualquier cambio en la rutina habitual antes de que ocurra.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim2')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim2')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim2')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">9</span>Se usan apoyos para el control del tiempo en las tareas (cronómetros visuales, relojes de arena, Time Timer…).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim2')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim2')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim2')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">10</span>Las actividades se desglosan en pasos visuales con secuencias de imágenes o pictogramas.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim2')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim2')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim2')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">11</span>Las transiciones entre actividades están señalizadas de forma clara y predecible para el alumnado.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim2')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim2')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim2')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">12</span>El alumnado con NEE dispone de un horario personal adaptado a sus necesidades (carpeta, tablero, tarjeta…).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim2')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim2')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim2')">❌ No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: COMUNICACIÓN Y LENGUAJE -->
+    <div class="section-block">
+      <div class="section-title">
+        <span class="emoji">💬</span>
+        <h2>3. Comunicación y lenguaje accesible</h2>
+        <span class="count">6 ítems</span>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">13</span>Se usa un lenguaje sencillo, claro y adaptado al nivel de comprensión del alumnado con NEE (frases cortas, vocabulario cotidiano).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim3')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim3')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim3')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">14</span>Se dan instrucciones una a una, esperando que el alumnado las procese antes de continuar.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim3')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim3')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim3')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">15</span>Se comprueba regularmente si el alumnado con NEE ha comprendido las explicaciones y actividades.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim3')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim3')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim3')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">16</span>Los textos escritos para el alumnado con NEE siguen principios de Lectura Fácil (letra Arial o similar, interlineado amplio, sin justificar, imágenes de apoyo).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim3')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim3')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim3')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">17</span>Se utilizan sistemas de Comunicación Aumentativa y Alternativa (SAAC/PECS/tableros) con el alumnado que los necesita.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim3')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim3')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim3')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">18</span>Se combinan apoyos visuales (pictogramas, gestos, imágenes) con la comunicación oral para facilitar la comprensión.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim3')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim3')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim3')">❌ No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: DISEÑO DE ACTIVIDADES -->
+    <div class="section-block">
+      <div class="section-title">
+        <span class="emoji">📚</span>
+        <h2>4. Diseño de actividades y aprendizaje</h2>
+        <span class="count">6 ítems</span>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">19</span>Las actividades se adaptan ofreciendo múltiples formatos de respuesta (oral, escrito, con pictogramas, manipulativo…).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim4')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim4')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim4')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">20</span>Se priorizan los aprendizajes que favorecen la autonomía y la participación del alumnado en la vida diaria.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim4')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim4')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim4')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">21</span>Las evaluaciones están adaptadas: incluyen pictogramas, preguntas visuales, respuesta múltiple u otras alternativas al texto.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim4')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim4')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim4')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">22</span>Se simplifican las tareas eliminando pasos innecesarios y se estructura visualmente cada tarea (qué hacer, cómo, cuándo acaba).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim4')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim4')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim4')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">23</span>Se facilitan los apuntes o materiales de trabajo previamente al alumnado que los necesita.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim4')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim4')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim4')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">24</span>Se utilizan mapas conceptuales, esquemas visuales o guiones de tarea para apoyar el aprendizaje.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim4')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim4')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim4')">❌ No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: ROL DOCENTE Y CLIMA -->
+    <div class="section-block">
+      <div class="section-title">
+        <span class="emoji">👩‍🏫</span>
+        <h2>5. Rol docente, conducta y clima de aula</h2>
+        <span class="count">6 ítems</span>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">25</span>Se explica explícitamente el rol de cada persona en las actividades (quién hace qué, quién puede pedir ayuda y a quién).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim5')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim5')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim5')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">26</span>Se crea un clima de aula predecible y seguro: el alumnado sabe qué se espera en cada momento y con quién contar.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim5')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim5')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim5')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">27</span>Se es tolerante con el error y se ofrece tiempo suficiente para que el alumnado responda o procese la información.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim5')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim5')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim5')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">28</span>Se fomenta el apoyo mutuo entre compañeros/as (tutoría entre iguales, compañero/a de referencia para alumnado NEE).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim5')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim5')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim5')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">29</span>Se coordinan con el resto del equipo docente los apoyos visuales y estrategias de accesibilidad (acuerdos de centro).</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim5')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim5')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim5')">❌ No</button>
+        </div>
+      </div>
+
+      <div class="question-item">
+        <div class="question-text"><span class="q-num">30</span>El foco está puesto en modificar el contexto y el entorno, no solo en las capacidades del alumno/a con NEE.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(this,'si','dim5')">✅ Sí</button>
+          <button class="opt-btn" onclick="answer(this,'aveces','dim5')">🟡 A veces</button>
+          <button class="opt-btn" onclick="answer(this,'no','dim5')">❌ No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+      <button class="submit-btn" onclick="calculate()">Ver mis resultados 🎯</button>
+      <p class="submit-note">Puedes responder en cualquier orden. Cuantas más respuestas, más preciso el resultado.</p>
+    </div>
+
+  </div><!-- end test-form -->
+
+  <!-- RESULTS -->
+  <div id="results">
+
+    <div class="results-header">
+      <h2 id="res-title">Perfil de accesibilidad cognitiva</h2>
+      <div class="score-circle" id="score-circle">
+        <div class="score-circle-inner">
+          <div class="score-number" id="score-num">0%</div>
+          <div class="score-label">LOGRADO</div>
+        </div>
+      </div>
+      <div class="nivel-badge" id="nivel-badge">...</div>
+      <p style="margin-top:12px; opacity:0.8; font-size:0.9rem;" id="nivel-desc"></p>
+    </div>
+
+    <!-- DIMENSION CARDS -->
+    <div class="dim-results" id="dim-results"></div>
+
+    <!-- RECOMMENDATIONS -->
+    <div class="recom-section" id="recom-section">
+      <h3>💡 Recomendaciones prioritarias</h3>
+      <div id="recom-list"></div>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="retake-btn" onclick="retake()">🔄 Volver a realizar el test</button>
+    </div>
+
+  </div><!-- end results -->
+
+  <footer>
+    <strong>UEO Xàtiva · Àmbit Discapacitat Intel·lectual</strong> · Basado en "Accessibilitat Cognitiva" UEO Xàtiva
+  </footer>
+
+</div><!-- end wrapper -->
+
+<script>
+  const answers = {};
+  const dimScores = { dim1: [], dim2: [], dim3: [], dim4: [], dim5: [] };
+  let totalAnswered = 0;
+  const TOTAL = 30;
+
+  function answer(btn, val, dim) {
+    const item = btn.closest('.question-item');
+    const btns = item.querySelectorAll('.opt-btn');
+    btns.forEach(b => {
+      b.classList.remove('selected-si', 'selected-no', 'selected-aveces');
+    });
+    btn.classList.add('selected-' + val);
+
+    const qNum = parseInt(item.querySelector('.q-num').textContent);
+    const wasAnswered = answers[qNum] !== undefined;
+    answers[qNum] = { val, dim };
+
+    if (!wasAnswered) {
+      totalAnswered++;
+      updateProgress();
+    }
+  }
+
+  function updateProgress() {
+    const pct = Math.round((totalAnswered / TOTAL) * 100);
+    document.getElementById('prog-bar').style.width = pct + '%';
+    document.getElementById('prog-count').textContent = totalAnswered + ' / ' + TOTAL;
+  }
+
+  function score(val) {
+    if (val === 'si') return 2;
+    if (val === 'aveces') return 1;
+    return 0;
+  }
+
+  function calculate() {
+    if (totalAnswered < 20) {
+      alert('⚠️ Por favor, responde al menos 20 preguntas para obtener un perfil más preciso.');
+      return;
+    }
+
+    const dimData = { dim1: [], dim2: [], dim3: [], dim4: [], dim5: [] };
+    Object.values(answers).forEach(a => dimData[a.dim].push(a.val));
+
+    const dimInfo = [
+      { id: 'dim1', label: 'Espacio y entorno', emoji: '🏫' },
+      { id: 'dim2', label: 'Organización temporal', emoji: '⏰' },
+      { id: 'dim3', label: 'Comunicación accesible', emoji: '💬' },
+      { id: 'dim4', label: 'Diseño de actividades', emoji: '📚' },
+      { id: 'dim5', label: 'Rol docente y clima', emoji: '👩‍🏫' }
+    ];
+
+    let totalScore = 0; let totalMax = 0;
+    const dimCalc = dimInfo.map(d => {
+      const arr = dimData[d.id];
+      if (arr.length === 0) return { ...d, pct: 0, count: 0, max: 0, raw: 0 };
+      const raw = arr.reduce((s, v) => s + score(v), 0);
+      const max = arr.length * 2;
+      totalScore += raw; totalMax += max;
+      return { ...d, pct: Math.round((raw / max) * 100), count: arr.length, raw, max };
+    });
+
+    const overallPct = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
+
+    // Show results
+    document.getElementById('test-form').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+
+    // Score circle
+    document.getElementById('score-circle').style.setProperty('--pct', overallPct * 3.6 + 'deg');
+    document.getElementById('score-num').textContent = overallPct + '%';
+
+    // Nivel
+    let nivel, nDesc, nColor;
+    if (overallPct >= 80) {
+      nivel = '🌟 Aula muy accesible'; nDesc = '¡Excelente trabajo! Tu aula ya incorpora la mayoría de recursos de accesibilidad cognitiva. Sigue refinando los detalles y comparte tus buenas prácticas con el equipo.';
+      nColor = '#06D6A0';
+    } else if (overallPct >= 60) {
+      nivel = '💛 En buen camino'; nDesc = 'Tienes una base sólida de accesibilidad cognitiva. Hay aspectos concretos que puedes mejorar para dar un gran salto en la inclusión de tu alumnado NEE.';
+      nColor = '#FFD166';
+    } else if (overallPct >= 40) {
+      nivel = '🔵 En proceso'; nDesc = 'Has comenzado a incorporar estrategias de accesibilidad, pero hay áreas importantes que requieren atención prioritaria para que tu alumnado NEE pueda participar plenamente.';
+      nColor = '#29ABE2';
+    } else {
+      nivel = '🚀 Oportunidad de mejora'; nDesc = 'Tu aula tiene mucho potencial para mejorar la accesibilidad cognitiva. ¡Cada pequeño cambio en el entorno tiene un gran impacto en el alumnado con NEE!';
+      nColor = '#FF6B6B';
+    }
+    document.getElementById('nivel-badge').textContent = nivel;
+    document.getElementById('nivel-badge').style.background = nColor;
+    if (overallPct >= 80) document.getElementById('nivel-badge').style.color = 'white';
+    document.getElementById('nivel-desc').textContent = nDesc;
+
+    // Dim cards
+    const colors = ['#29ABE2','#06D6A0','#FFD166','#FF6B6B','#B88FDB'];
+    const dimHTML = dimCalc.map((d, i) => {
+      const color = colors[i];
+      const fb = d.pct >= 80 ? '¡Muy bien! Sigue así.' : d.pct >= 60 ? 'Buen nivel, con margen de mejora.' : d.pct >= 40 ? 'Necesita mayor atención.' : 'Área prioritaria de mejora.';
+      return `<div class="dim-card" style="border-top-color:${color}">
+        <h3>${d.emoji} ${d.label}</h3>
+        <div class="progress-bar-wrap"><div class="progress-bar" style="width:${d.pct}%;background:${color}"></div></div>
+        <div class="dim-stat">${d.pct}% · ${d.count} preguntas respondidas</div>
+        <div class="dim-feedback">${fb}</div>
+      </div>`;
+    }).join('');
+    document.getElementById('dim-results').innerHTML = dimHTML;
+
+    // Recommendations
+    const allRec = [
+      { dim: 'dim1', thr: 60, icon: '🗂️', bg: '#e8f7fd', title: 'Estructura los espacios del aula', text: 'Delimita visualmente las zonas de trabajo con colores o pictogramas. Etiqueta materiales con imágenes para que sean localizables de forma autónoma.' },
+      { dim: 'dim2', thr: 60, icon: '📅', bg: '#e8fff7', title: 'Implementa horarios visuales', text: 'Crea un panel de horario diario con pictogramas visible para todos. Anticipa siempre los cambios de rutina con suficiente antelación.' },
+      { dim: 'dim3', thr: 60, icon: '🗣️', bg: '#fff9e6', title: 'Adapta el lenguaje y los textos', text: 'Aplica principios de Lectura Fácil: frases cortas, una idea por frase, letra grande sin serifa, imágenes de apoyo. Acompaña siempre la comunicación oral con apoyos visuales.' },
+      { dim: 'dim4', thr: 60, icon: '✏️', bg: '#fff0f0', title: 'Diversifica las actividades y evaluaciones', text: 'Ofrece múltiples formas de demostrar el aprendizaje: oral, manipulativo, con pictogramas. Adapta los exámenes con imágenes y opciones de respuesta visual.' },
+      { dim: 'dim5', thr: 60, icon: '🤝', bg: '#f5f0ff', title: 'Fortalece el rol docente inclusivo', text: 'Asegúrate de que el alumnado sabe a quién pedir ayuda y en qué momento. Establece acuerdos de centro para que los apoyos sean consistentes en todas las aulas.' },
+      { dim: 'dim1', thr: 40, icon: '🔖', bg: '#e8f7fd', title: 'Prioridad: señalización del aula', text: 'La señalización accesible es el primer paso. Empieza con las normas de clase en pictogramas y el etiquetado de materiales básicos.' },
+      { dim: 'dim3', thr: 40, icon: '💡', bg: '#fff9e6', title: 'Prioridad: apoyos visuales en comunicación', text: 'Incorpora pictogramas en las instrucciones diarias aunque sea de forma gradual. Herramientas como ARASAAC ofrecen recursos gratuitos.' },
+    ];
+
+    const lowDims = dimCalc.filter(d => d.pct < 65 && d.count > 0).map(d => d.id);
+    const recs = allRec.filter(r => lowDims.includes(r.dim) && dimCalc.find(d => d.id === r.dim)?.pct < r.thr);
+    const unique = [];
+    const seen = new Set();
+    recs.forEach(r => { if (!seen.has(r.title)) { seen.add(r.title); unique.push(r); } });
+    const finalRecs = unique.slice(0, 5);
+
+    if (finalRecs.length === 0) {
+      document.getElementById('recom-list').innerHTML = '<div class="recom-item"><div class="recom-icon" style="background:#e8fff7">🌟</div><div class="recom-text"><h4>¡Aula muy accesible!</h4><p>Mantén las buenas prácticas y comparte tus estrategias con el resto del equipo docente para crear acuerdos de centro.</p></div></div>';
+    } else {
+      document.getElementById('recom-list').innerHTML = finalRecs.map(r =>
+        `<div class="recom-item">
+          <div class="recom-icon" style="background:${r.bg}">${r.icon}</div>
+          <div class="recom-text"><h4>${r.title}</h4><p>${r.text}</p></div>
+        </div>`
+      ).join('');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function retake() {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    totalAnswered = 0;
+    document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected-si','selected-no','selected-aveces'));
+    updateProgress();
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('test-form').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
